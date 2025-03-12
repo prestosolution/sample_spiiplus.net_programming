@@ -241,7 +241,6 @@ namespace ACS.Helpers
         }
         #endregion
 
-
         #region Inputs/Outputs Access Methods
         public bool GetInputPort(int portNo, ref int result)
         {
@@ -298,6 +297,67 @@ namespace ACS.Helpers
                 lastErrStrings = ex.Message;
                 return false;
             }
+            return true;
+        }
+        #endregion
+
+        #region Axis/Motor Management Methods
+        public bool Enable(int axis)
+        {
+            try
+            {
+                acslib.Enable((Axis)axis);
+            }
+            catch (Exception ex)//exception catch
+            {
+                lastErrStrings = ex.Message;
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Disable(int axis)
+        {
+            try
+            {
+                acslib.Disable((Axis)axis);
+            }
+            catch (Exception ex)//exception catch
+            {
+                lastErrStrings = ex.Message;
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Jog(int axis, bool direction, double velocity = 1, bool useCustomSpeed = false)
+        {
+            try
+            {
+                int dir = (int)(direction ? GlobalDirection.ACSC_POSITIVE_DIRECTION : GlobalDirection.ACSC_NEGATIVE_DIRECTION);
+                if (useCustomSpeed == true)
+                {
+                    acslib.Jog(
+                            MotionFlags.ACSC_AMF_VELOCITY,
+                            (Axis)axis,
+                            dir * velocity);
+                }
+                else
+                {
+                    acslib.Jog(
+                            MotionFlags.ACSC_NONE,
+                            (Axis)axis,
+                            dir * velocity);//기본속도를 사용하여 선택된 축을 -방향으로 jog
+                }
+            }
+            catch (Exception ex)//예외처리하기
+            {
+                lastErrStrings = ex.Message;
+                return false;
+            }
+
             return true;
         }
         #endregion

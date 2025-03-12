@@ -126,5 +126,16 @@ namespace ACS.Helpers
         ACSC_SAFETY_FAILURE = SPiiPlusNET.SafetyControlMasks.ACSC_SAFETY_FAILURE,
         ACSC_ALL = uint.MaxValue
     }
+
+    [Flags]
+    public enum MotorStates
+    {
+        ACSC_ALL = SPiiPlusNET.MotorStates.ACSC_ALL,
+        ACSC_NONE = SPiiPlusNET.MotorStates.ACSC_NONE,
+        ACSC_MST_ENABLE = SPiiPlusNET.MotorStates.ACSC_MST_ENABLE,
+        ACSC_MST_INPOS = SPiiPlusNET.MotorStates.ACSC_MST_INPOS,
+        ACSC_MST_MOVE = SPiiPlusNET.MotorStates.ACSC_MST_MOVE,
+        ACSC_MST_ACC = SPiiPlusNET.MotorStates.ACSC_MST_ACC
+    }
     #endregion
 }

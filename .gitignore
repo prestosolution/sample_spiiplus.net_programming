@@ -1,0 +1,7 @@
+.vs/
+Binaries/
+Ex1.Communication/obj/
+Ex2.RunBuffer/obj/
+Ex3.TransactionCommand/obj/
+Ex4.IoControl/obj/
+Ex5.MotorControl/obj/
