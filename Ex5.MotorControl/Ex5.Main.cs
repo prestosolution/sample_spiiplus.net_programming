@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 using ACS.Helpers;
@@ -20,7 +21,7 @@ namespace Ex5.MotorControl
         public Form1()
         {            
             InitializeComponent();
-            acsManager = new AcsManager();
+            acsManager = AcsManager.GetInstance();
 
             RDO_SIM.Checked = true;
             RDO_TCP.Checked = false;
@@ -68,6 +69,11 @@ namespace Ex5.MotorControl
                 acsManager.Transaction("?SYSINFO(13)", ref strTemp);//transaction ?SYSINFO(13)을 입력해서 나오는 결과값(=>최대 모터축 수)을 strTemp에 저장
                 m_nTotalAxis = Convert.ToInt32(strTemp.Trim());//최대축수를 반복문에 활용하기 위해 Intger로 변형
 
+                AxisCombox.Items.Clear();
+                for (int i=0; i<GlobalVar.MAX_AXES; i++)
+                {
+                    AxisCombox.Items.Add(i);
+                }
                 AxisCombox.SelectedIndex = 0;//그리고 콤보박스 기본 선택은 0번축으로 진행함
 
                 UpdateProfile();//축에 맞는 모터 속도값 불러오기
@@ -203,13 +209,13 @@ namespace Ex5.MotorControl
             if (Abtxt.Text.Length > 0)//뭐라도 입력해야 동작
             {
                 IfTargetPos = Convert.ToDouble(Abtxt.Text);//입력한 값을 double로 바꿔서 할당함
-                acsManager.AbsolutePTP((Axis)AxisCombox.SelectedIndex, IfTargetPos);    
+                acsManager.ToPoint(AxisCombox.SelectedIndex, IfTargetPos);    
             }
         }
 
         private void stop_abs_mo_btn_Click(object sender, EventArgs e)
         {
-            acsManager.HaltAxis((Axis)AxisCombox.SelectedIndex);
+            acsManager.Halt(AxisCombox.SelectedIndex);
         }
 
         private void Start_Re_mo_btn_Click(object sender, EventArgs e)//execute relative motion
@@ -218,13 +224,13 @@ namespace Ex5.MotorControl
             if (Retxt.Text.Length > 0)//뭐라도 입력해야 동작
             {
                 IfTargetPos = Convert.ToDouble(Retxt.Text);//입력한 값을 double로 바꿔서 할당함
-                _AcsManager.RelativePTP((Axis)AxisCombox.SelectedIndex, IfTargetPos);
+                acsManager.ToPoint(AxisCombox.SelectedIndex, IfTargetPos, true);
             }
         }
 
         private void Stop_Re_mo_btn_Click(object sender, EventArgs e)
         {
-            _AcsManager.HaltAxis((Axis)AxisCombox.SelectedIndex);
+            acsManager.Halt(AxisCombox.SelectedIndex);
         }
 
         #endregion
@@ -237,12 +243,11 @@ namespace Ex5.MotorControl
             if (chk_use_vel.Checked)//지정된 속도를 사용하기로 한 경우
             {
                 IfVelocity = Convert.ToDouble(Jog_vel_txt.Text.Trim());//공백을 제거한 속도값을 더블로 바꿔서 할당
-
-                _AcsManager.Jog((Axis)AxisCombox.SelectedIndex, true ,IfVelocity, true);
+                acsManager.Jog(AxisCombox.SelectedIndex, true , IfVelocity);
             }
             else
             {
-                _AcsManager.Jog((Axis)AxisCombox.SelectedIndex, true);
+                acsManager.Jog(AxisCombox.SelectedIndex, true);
             }
         }
 
@@ -252,25 +257,22 @@ namespace Ex5.MotorControl
             if (chk_use_vel.Checked)//지정된 속도를 사용하기로 한 경우
             {
                 IfVelocity = Convert.ToDouble(Jog_vel_txt.Text.Trim());//입력된 속도를 공백없이 더블로 바꿔 할당
-                if (IfVelocity > 0) 
-                    IfVelocity = IfVelocity * -1;//이후 양수 값을 입력했다면 음수로 변환
-
-                _AcsManager.Jog((Axis)AxisCombox.SelectedIndex, false ,IfVelocity, true);
+                acsManager.Jog(AxisCombox.SelectedIndex, false ,IfVelocity);
             }
             else
             {
-                _AcsManager.Jog((Axis)AxisCombox.SelectedIndex, false);
+                acsManager.Jog(AxisCombox.SelectedIndex, false);
             }
         }
 
         private void PJog_btn_MouseUp(object sender, MouseEventArgs e)//눌렀다가 때면 선택한 축 멈춤
         {
-            _AcsManager.HaltAxis((Axis)AxisCombox.SelectedIndex);
+            acsManager.Halt(AxisCombox.SelectedIndex);
         }
 
         private void NJog_btn_MouseUp(object sender, MouseEventArgs e)//눌렀다가 때면 선택한 축 멈춤
         {
-            _AcsManager.HaltAxis((Axis)AxisCombox.SelectedIndex);
+            acsManager.Halt(AxisCombox.SelectedIndex);
         }
 
         #endregion
@@ -280,23 +282,26 @@ namespace Ex5.MotorControl
 
         private void Start_bnf_btn_Click(object sender, EventArgs e)//back and forth 시작 버튼
         {
-            _AcsManager.BackandForthStart(AxisCombox.SelectedIndex, PointAtxt.Text, PointBtxt.Text, Dwelltxt.Text);
+            double targetA = Convert.ToDouble(PointAtxt.Text);
+            double targetB = Convert.ToDouble(PointBtxt.Text);
+            int dwell = Convert.ToInt32(Dwelltxt.Text);
+
+            acsManager.BackAndForthMoveStart(AxisCombox.SelectedIndex, targetA, targetB, dwell);
             Start_bnf_btn.Enabled = false; // 버튼 비활성화
             Stop_bnf_btn.Enabled = true;  // Stop 버튼 활성화
         }
 
         private void Stop_bnf_btn_Click(object sender, EventArgs e)//back and forth 정지버튼
         {
-            _AcsManager.BackandForthStop((Axis)AxisCombox.SelectedIndex);                                 
+            acsManager.BackAndForthMoveStop(AxisCombox.SelectedIndex);                                 
             Start_bnf_btn.Enabled = true; // Start 버튼 활성화
             Stop_bnf_btn.Enabled = false; // Stop 버튼 비활성화
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)//프로그램을 껐을 때도 모터가 움직임을 막기 위함
         {
-            // 운동 스레드가 실행 중이라면 안전하게 종료
-            _AcsManager.BackandForthThreadCleanUp();
-            _AcsManager.HaltAxis((Axis)AxisCombox.SelectedIndex);//축멈춤
+            acsManager.Halt(AxisCombox.SelectedIndex);
+            acsManager.Dispose();
         }
 
         private void A_Pos_Read_btn_Click(object sender, EventArgs e)//현재 위치 읽기 버튼
@@ -317,18 +322,14 @@ namespace Ex5.MotorControl
         {
             try
             {
-                string[] Save = _AcsManager.UpdateProfile((Axis)AxisCombox.SelectedIndex);
+                int axis = AxisCombox.SelectedIndex;
+                acsManager.ReadMoveProfile(axis);
 
-                if (Save.Length < 5)
-                {
-                    throw new InvalidOperationException("유효하지 않은 프로파일 데이터");
-                }
-
-                Veltxt.Text = Save[0];//콤보박스에서 선택된 인덱스의 속도 값을 문자열로 변환 후 텍스트 박스에 나타냄
-                ACCtxt.Text = Save[1];//콤보박스에서 선택된 인덱스의 가속도 값을 문자열로 변환 후 텍스트 박스에 나타냄
-                DECtxt.Text = Save[2];//콤보박스에서 선택된 인덱스의 감속도 값을 문자열로 변환 후 텍스트 박스에 나타냄
-                KDECtxt.Text = Save[3];//콤보박스에서 선택된 인덱스의 비상정지 감속도 값을 문자열로 변환 후 텍스트 박스에 나타냄
-                JERKtxt.Text = Save[4];//콤보박스에서 선택된 인덱스의 가가속도 값을 문자열로 변환 후 텍스트 박스에 나타냄
+                Veltxt.Text = acsManager.moveProfile[axis].Velocity.ToString();
+                ACCtxt.Text = acsManager.moveProfile[axis].Acceleration.ToString();
+                DECtxt.Text = acsManager.moveProfile[axis].Deceleration.ToString();
+                KDECtxt.Text = acsManager.moveProfile[axis].killDeceleration.ToString();
+                JERKtxt.Text = acsManager.moveProfile[axis].Jerk.ToString();
             }
             catch (Exception ex)
             {
@@ -344,49 +345,27 @@ namespace Ex5.MotorControl
             }
         }
 
-        private void UpdateAxisStatus()// 너무 복잡한 형변환 (다양한 형식 -> string -> 다양한 형식 (motorstate의 경우 추가로 motorstate 진행)) -> 수정 필요
+        private void UpdateAxisStatus()
         {
-            int iAxisNo = AxisCombox.SelectedIndex;
-            string[] Save = _AcsManager.UpdateAxisStatus(iAxisNo);
+            int axis = AxisCombox.SelectedIndex;
+            acsManager.UpdateAxisStatus(axis);
 
-            if (Save.Length < 5)
-            {
-                throw new InvalidOperationException("유효하지 않은 axis status 데이터");
-            }
+            m_nMotorState = acsManager.axisStatus[axis].MotoStatesFlag;
+            m_lfRPos = acsManager.axisStatus[axis].RPosition;
+            m_lfFPos = acsManager.axisStatus[axis].FPosition;
+            m_lfFVEL = acsManager.axisStatus[axis].FVelocity;
 
-            try
-            {
-                m_nMotorState = (MotorStates)Convert.ToInt32(Save[0]);//모터 상태 0b0000형태로 받아온다. 
+            m_lfPE = acsManager.axisStatus[axis].PE;
 
-                m_lfRPos = Convert.ToDouble(Save[1]);//지령 모터위치 할당 
-
-                m_lfFPos = Convert.ToDouble(Save[2]);//실제 모터위치 할당
-
-                m_lfPE = Convert.ToDouble(Save[3]);//모든 버퍼의 1차원 위치 오차값을 할당함
-
-                m_lfFVEL = Convert.ToDouble(Save[4]);//모든 버퍼의 1차원 실회전속을 할당함
-
-                RPOStxt.Text = String.Format("{0:0.0000}", m_lfRPos);//지령 모터 위치 가시할 수 있도록 텍스트화작업
-                FPOStxt.Text = String.Format("{0:0.0000}", m_lfFPos);//실제 모터 위치 가시할 수 있도록 텍스트화작업
-                PEtxt.Text = String.Format("{0:0.0000}", m_lfPE);//위치 오차값 가시할 수 있도록 텍스트화작업
-                FVELtxt.Text = String.Format("{0:0.0000}", m_lfFVEL);//실회전속 모터 위치 가시할 수 있도록 텍스트화작업
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"axis status 업데이트 중 오류가 발생했습니다.\n{ex.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-
-                // UI 초기화 (예외 발생 시)
-                RPOStxt.Text = "";//지령 모터 위치 가시할 수 있도록 텍스트화작업
-                FPOStxt.Text = "";//실제 모터 위치 가시할 수 있도록 텍스트화작업
-                PEtxt.Text = "";//위치 오차값 가시할 수 있도록 텍스트화작업
-                FVELtxt.Text = "";//실회전속 모터 위치 가시할 수 있도록 텍스트화작업
-            }
+            RPOStxt.Text = String.Format("{0:0.0000}", m_lfRPos);//지령 모터 위치 가시할 수 있도록 텍스트화작업
+            FPOStxt.Text = String.Format("{0:0.0000}", m_lfFPos);//실제 모터 위치 가시할 수 있도록 텍스트화작업
+            PEtxt.Text = String.Format("{0:0.0000}", m_lfPE);//위치 오차값 가시할 수 있도록 텍스트화작업
+            FVELtxt.Text = String.Format("{0:0.0000}", m_lfFVEL);//실회전속 모터 위치 가시할 수 있도록 텍스트화작업
         }
 
         private void Set_Zero_Pos_btn_Click(object sender, EventArgs e)//set fpos zero position
         {
-            _AcsManager.SetZeroPos((Axis)AxisCombox.SelectedIndex);
+            acsManager.SetFPosition(AxisCombox.SelectedIndex);
         }
 
         #endregion
