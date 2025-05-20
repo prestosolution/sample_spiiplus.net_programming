@@ -380,6 +380,7 @@
             this.Stop_bnf_btn.TabIndex = 17;
             this.Stop_bnf_btn.Text = "Stop Back and Forth Move";
             this.Stop_bnf_btn.UseVisualStyleBackColor = true;
+            this.Stop_bnf_btn.Click += new System.EventHandler(this.Stop_bnf_btn_Click);
             // 
             // Start_bnf_btn
             // 
@@ -390,6 +391,7 @@
             this.Start_bnf_btn.TabIndex = 16;
             this.Start_bnf_btn.Text = "Start Back and Forth Move";
             this.Start_bnf_btn.UseVisualStyleBackColor = true;
+            this.Start_bnf_btn.Click += new System.EventHandler(this.Start_bnf_btn_Click);
             // 
             // change_btn4
             // 
@@ -400,6 +402,7 @@
             this.change_btn4.TabIndex = 15;
             this.change_btn4.Text = "+/-";
             this.change_btn4.UseVisualStyleBackColor = true;
+            this.change_btn4.Click += new System.EventHandler(this.change_btn4_Click);
             // 
             // change_btn3
             // 
@@ -410,6 +413,7 @@
             this.change_btn3.TabIndex = 14;
             this.change_btn3.Text = "+/-";
             this.change_btn3.UseVisualStyleBackColor = true;
+            this.change_btn3.Click += new System.EventHandler(this.change_btn3_Click);
             // 
             // B_Pos_Read_btn
             // 
@@ -420,6 +424,7 @@
             this.B_Pos_Read_btn.TabIndex = 13;
             this.B_Pos_Read_btn.Text = "Read";
             this.B_Pos_Read_btn.UseVisualStyleBackColor = true;
+            this.B_Pos_Read_btn.Click += new System.EventHandler(this.B_Pos_Read_btn_Click);
             // 
             // A_Pos_Read_btn
             // 
@@ -430,6 +435,7 @@
             this.A_Pos_Read_btn.TabIndex = 9;
             this.A_Pos_Read_btn.Text = "Read";
             this.A_Pos_Read_btn.UseVisualStyleBackColor = true;
+            this.A_Pos_Read_btn.Click += new System.EventHandler(this.A_Pos_Read_btn_Click);
             // 
             // Dwelltxt
             // 
@@ -526,6 +532,8 @@
             this.PJog_btn.TabIndex = 1;
             this.PJog_btn.Text = "Positive >>";
             this.PJog_btn.UseVisualStyleBackColor = true;
+            this.PJog_btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PJog_btn_MouseDown);
+            this.PJog_btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PJog_btn_MouseUp);
             // 
             // NJog_btn
             // 
@@ -536,6 +544,8 @@
             this.NJog_btn.TabIndex = 0;
             this.NJog_btn.Text = "<< Negative";
             this.NJog_btn.UseVisualStyleBackColor = true;
+            this.NJog_btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.NJog_btn_MouseDown);
+            this.NJog_btn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.NJog_btn_MouseUp);
             // 
             // groupBox5
             // 
@@ -562,6 +572,7 @@
             this.Stop_Re_mo_btn.TabIndex = 15;
             this.Stop_Re_mo_btn.Text = "Stop";
             this.Stop_Re_mo_btn.UseVisualStyleBackColor = true;
+            this.Stop_Re_mo_btn.Click += new System.EventHandler(this.Stop_Re_mo_btn_Click);
             // 
             // change_btn2
             // 
@@ -572,6 +583,7 @@
             this.change_btn2.TabIndex = 14;
             this.change_btn2.Text = "+/-";
             this.change_btn2.UseVisualStyleBackColor = true;
+            this.change_btn2.Click += new System.EventHandler(this.change_btn2_Click);
             // 
             // Start_Re_mo_btn
             // 
@@ -582,6 +594,7 @@
             this.Start_Re_mo_btn.TabIndex = 13;
             this.Start_Re_mo_btn.Text = "Start Motion";
             this.Start_Re_mo_btn.UseVisualStyleBackColor = true;
+            this.Start_Re_mo_btn.Click += new System.EventHandler(this.Start_Re_mo_btn_Click);
             // 
             // Retxt
             // 
@@ -625,6 +638,7 @@
             this.stop_Ab_mo_btn.TabIndex = 14;
             this.stop_Ab_mo_btn.Text = "Stop";
             this.stop_Ab_mo_btn.UseVisualStyleBackColor = true;
+            this.stop_Ab_mo_btn.Click += new System.EventHandler(this.stop_abs_mo_btn_Click);
             // 
             // change_btn1
             // 
@@ -635,6 +649,7 @@
             this.change_btn1.TabIndex = 9;
             this.change_btn1.Text = "+/-";
             this.change_btn1.UseVisualStyleBackColor = true;
+            this.change_btn1.Click += new System.EventHandler(this.change_btn1_Click);
             // 
             // start_abs_mo_btn
             // 
@@ -645,6 +660,7 @@
             this.start_abs_mo_btn.TabIndex = 13;
             this.start_abs_mo_btn.Text = "Start Motion";
             this.start_abs_mo_btn.UseVisualStyleBackColor = true;
+            this.start_abs_mo_btn.Click += new System.EventHandler(this.start_abs_mo_btn_Click);
             // 
             // Abtxt
             // 
@@ -692,6 +708,7 @@
             this.Set_Zero_Pos_btn.TabIndex = 15;
             this.Set_Zero_Pos_btn.Text = "Set Zero Position";
             this.Set_Zero_Pos_btn.UseVisualStyleBackColor = true;
+            this.Set_Zero_Pos_btn.Click += new System.EventHandler(this.Set_Zero_Pos_btn_Click);
             // 
             // PEtxt
             // 
@@ -775,6 +792,7 @@
             this.button_Disable.TabIndex = 6;
             this.button_Disable.Text = "Disable";
             this.button_Disable.UseVisualStyleBackColor = true;
+            this.button_Disable.Click += new System.EventHandler(this.button_Disable_Click);
             // 
             // button_Enable
             // 
@@ -785,6 +803,7 @@
             this.button_Enable.TabIndex = 5;
             this.button_Enable.Text = "Enable";
             this.button_Enable.UseVisualStyleBackColor = true;
+            this.button_Enable.Click += new System.EventHandler(this.button_Enable_Click);
             // 
             // AxisCombox
             // 
@@ -970,11 +989,15 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Velocity(VEL)";
             // 
+            // tmrMonitor
+            // 
+            this.tmrMonitor.Tick += new System.EventHandler(this.tmrMonitor_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(663, 506);
+            this.ClientSize = new System.Drawing.Size(574, 441);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Com_set);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
