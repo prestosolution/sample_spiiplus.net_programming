@@ -1,2 +1,2 @@
-# sample_SPiiPlus.NET_programming
+# Sample_SPiiPlus.NET_Programming
 SPiiPlus.NET Library Programming Example
