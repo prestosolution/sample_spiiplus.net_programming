@@ -1,2 +1,2 @@
-# sample_acsc_programming
-ACSC Library Programming Example
+# sample_SPiiPlus.NET_programming
+SPiiPlus.NET Library Programming Example
