@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.connect_state = new System.Windows.Forms.Label();
             this.lbl_connect_state = new System.Windows.Forms.Label();
@@ -39,12 +40,14 @@
             this.PORTtxt = new System.Windows.Forms.TextBox();
             this.RDO_SIM = new System.Windows.Forms.RadioButton();
             this.RDO_TCP = new System.Windows.Forms.RadioButton();
-            this.timer1 = new System.Windows.Forms.Timer();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.BtnControllerReboot = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.BtnControllerReboot);
             this.groupBox1.Controls.Add(this.connect_state);
             this.groupBox1.Controls.Add(this.lbl_connect_state);
             this.groupBox1.Controls.Add(this.disconnect_btn);
@@ -60,7 +63,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(323, 122);
+            this.groupBox1.Size = new System.Drawing.Size(323, 157);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Communication Setting";
@@ -170,11 +173,20 @@
             this.RDO_TCP.UseVisualStyleBackColor = true;
             this.RDO_TCP.CheckedChanged += new System.EventHandler(this.RDO_TCP_CheckedChanged);
             // 
+            // BtnControllerReboot
+            // 
+            this.BtnControllerReboot.Location = new System.Drawing.Point(110, 117);
+            this.BtnControllerReboot.Name = "BtnControllerReboot";
+            this.BtnControllerReboot.Size = new System.Drawing.Size(204, 34);
+            this.BtnControllerReboot.TabIndex = 9;
+            this.BtnControllerReboot.Text = "Controller Reboot";
+            this.BtnControllerReboot.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(323, 122);
+            this.ClientSize = new System.Drawing.Size(323, 157);
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
@@ -200,6 +212,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lbl_connect_state;
         private System.Windows.Forms.Label connect_state;
+        private System.Windows.Forms.Button BtnControllerReboot;
     }
 }
 

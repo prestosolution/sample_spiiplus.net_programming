@@ -131,8 +131,6 @@ namespace Ex5.MotorControl
                 {
                     UpdateAxisStatus();
 
-                    UpdateProfile();
-
                     if ((m_nMotorState & MotorStates.ACSC_MST_MOVE) != 0) lblMoving.Image = Properties.Resources.On; else lblMoving.Image = Properties.Resources.Off;
                     //현 모터 상태와 비교해서 움직임 상태에 따라 토글
                     if ((m_nMotorState & MotorStates.ACSC_MST_INPOS) != 0) lblInPos.Image = Properties.Resources.On; else lblInPos.Image = Properties.Resources.Off;
@@ -231,6 +229,17 @@ namespace Ex5.MotorControl
         private void Stop_Re_mo_btn_Click(object sender, EventArgs e)
         {
             acsManager.Halt(AxisCombox.SelectedIndex);
+        }
+
+        private void BtnSetMoveParam_Click(object sender, EventArgs e)
+        {
+            double moveVel = Convert.ToDouble(Veltxt.Text);
+            double moveAcc = Convert.ToDouble(ACCtxt.Text);
+            double moveDec = Convert.ToDouble(DECtxt.Text);
+            double moveJerk = Convert.ToDouble(JERKtxt.Text);
+            double moveKillDec = Convert.ToDouble(KDECtxt.Text);
+
+            acsManager.SetParam(AxisCombox.SelectedIndex, moveVel, moveAcc, moveDec, moveJerk, moveKillDec);
         }
 
         #endregion

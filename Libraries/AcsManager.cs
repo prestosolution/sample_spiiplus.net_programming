@@ -1,6 +1,7 @@
-﻿using System;
+﻿using ACS.SPiiPlusNET;
+using System;
+using System.Data;
 using System.Threading;
-using ACS.SPiiPlusNET;
 
 namespace ACS.Helpers
 {
@@ -201,6 +202,11 @@ namespace ACS.Helpers
             }
 
             return true;
+        }
+
+        public void ControllerReboot()
+        {
+            acslib.ControllerReboot(50000);
         }
         #endregion
 
@@ -473,6 +479,22 @@ namespace ACS.Helpers
             }
 
             return true;
+        }
+
+        public void SetParam(int axisNo, double velocity, double acc, double dec, double jerk, double kdec)
+        {
+            try
+            {
+                acslib.SetVelocityImm((Axis)axisNo, velocity);
+                acslib.SetAccelerationImm((Axis)axisNo, acc);
+                acslib.SetDecelerationImm((Axis)axisNo, dec);
+                acslib.SetJerkImm((Axis)axisNo, jerk);
+                acslib.SetKillDecelerationImm((Axis)axisNo, kdec);
+            }
+            catch (Exception e)
+            {
+                lastErrStrings = "Error: " + e.Message;
+            }
         }
 
         public bool ToPoint(int axis, double targetPos, bool relativeMove = false)

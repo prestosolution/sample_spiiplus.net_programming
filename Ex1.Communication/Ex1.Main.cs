@@ -13,6 +13,13 @@ namespace Ex1.Communication
         {
             InitializeComponent();
             acsManager = AcsManager.GetInstance();
+
+            BtnControllerReboot.Click += BtnControllerReboot_Click;
+        }
+
+        private void BtnControllerReboot_Click(object sender, EventArgs e)
+        {
+            acsManager.ControllerReboot();
         }
 
         #region button enabled state
